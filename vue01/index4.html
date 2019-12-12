@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<cpt2 :msg="msg" v-on:click="add1"></cpt2>
+		</div>
+		<script>
+			var app = new Vue({
+				el:"#app",
+				data:{
+					msg:"aaaaa"
+				},
+				methods:{
+					add1:function(){
+						alert("add1");
+					}
+				},
+				components:{	
+					"cpt2":{
+						props:['msg'],
+						template:"<button>{{msg}}</button>"
+					},
+					"cpt1":{
+						props:['msg'],
+						template:"<button @click='add'>{{msg}}</button>",
+						methods:{
+							add: function(){
+								alert("add");
+								this.$emit('add9');
+							}
+						}
+					}	
+				}
+			});	
+
+		</script>
+	</body>
+</html>

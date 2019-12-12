@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			
+			<tmp1>
+				<p slot='aaa'>
+					<span>1111111111111</span>
+				</p>
+			</tmp1>
+		</div>
+		<script>
+			
+			var app = new Vue({
+				el:'#app',
+				components:{
+					tmp1:{
+						template:`<h1><slot name="aaa">默认的</slot></h1>`
+					}
+				}
+			});	
+		</script>
+	</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.emailBox{
+				display: inline-block;
+				position: relative;
+				}
+			.emailMenu{position: absolute;top: 33px;left: 0px;width: 100%;}
+			.emailMenu ul{margin: 0px 15px;border: 1px solid #ccc;}
+			.emailMenu li{padding: 6px 12px;cursor: default;}
+			.emailMenu li:hover{background-color: #eee;}
+			.emailMenu .active{background-color: #eee;}
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			
+			
+			
+			var asda= new Date();
+			asda.getMonth()
+		</script>
+		<div id="app">
+			<div class="container">
+				<br />
+				<br />
+				<br />
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label col-lg-2">邮箱</label>
+						<div class="col-lg-3 emailBox">
+							<input type="text" class="form-control"
+							@keydown.up="upEmail" 
+							@keydown.down="downEmail" 
+							@keydown.enter.prevent="enterEmail"
+							@focus="isshow=true"
+							@blur="blurEmail"
+							 v-model.trim="form.email"/>
+							<div class="emailMenu">
+								<ul class="list-unstyled" v-for="(email,i) in emailList">
+									<li :class="{active:i==key_no}" @mouseenter="mouse_no=i" @click="clickEmail">{{email}}</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			var app = new Vue({
+				el:"#app",
+				data:{
+					isshow:true,
+					key_no:-1,
+					mouse_no:-1,
+					emailType:['qq.com','163.com','126.com','189.com','hotmail.com','sina.com'],
+					form:{
+						email:""
+					}
+				},
+				computed:{
+					emailList:function(){
+						var list = [];
+						var email = this.form.email.split('@');
+						if(this.form.email.length>0 && this.isshow){
+							this.emailType.forEach(function(type){
+								if (email.length==1) {
+									list.push(email[0]+'@'+type);
+								}else{
+									if(type.indexOf(email[1])==0 && email[1]!=type){
+										list.push(email[0]+'@'+type);
+									}
+								}
+							})
+						}
+						return list;
+					},
+				},
+				methods:{
+					upEmail:function(){
+						var len = this.emailList.length;
+						this.key_no--;
+						if(this.key_no<0){
+							this.key_no=len-1;
+						}
+					},
+					downEmail:function(){
+						this.key_no++;
+						var len = this.emailList.length;
+						if(this.key_no>=len){
+							this.key_no=0;
+						}
+					},
+					enterEmail:function(){
+						if(this.key_no!=-1){
+							this.form.email = this.emailList[this.key_no];
+							this.key_no=-1;
+							this.mouse_no=-1;
+						}
+					},
+					clickEmail:function(){
+						this.form.email = this.emailList[this.mouse_no];
+						this.key_no=-1;
+						this.mouse_no=-1;
+					},
+					blurEmail:function(){
+						if(this.mouse_no!=-1){
+							this.clickEmail();
+						}
+						this.isshow=false;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

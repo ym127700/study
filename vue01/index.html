@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<form>
+				<p><input type="text" v-model="txt"/><span>{{txt}}</span></p>	
+				<p><textarea v-model="txtarea"></textarea><span>{{txtarea}}</span></p>	
+				<p><input type="checkbox" v-model="chk" value="a"/><span>{{chk}}</span></p>	
+				<p>
+					<input type="checkbox" v-model="chks" value="a"/>
+					<input type="checkbox" v-model="chks" value="b"/>
+					<input type="checkbox" v-model="chks" value="c"/><span>{{chks}}</span>
+				</p>
+				<p>
+					<input type="radio" v-model="rad" value="女"/>女
+					<input type="radio" v-model="rad" value="男"/>男<span>{{rad}}</span>
+				</p>	
+				<p>
+					<span>{{sel}}</span>
+					<select v-model="sel">
+						<option value="">请选择</option>
+						<option value="aaa">aaa</option>
+						<option value="bbb">bbb</option>
+						<option value="ccc">ccc</option>
+					</select>
+				</p>	
+				<p>
+					<span>{{selected}}</span>
+					<select v-model="selected">
+						<option value="0">请选择</option>
+						<option v-for="opt in sels" v-bind:value="opt.value" v-text="opt.text"></option>
+					</select>
+				</p>
+				<p>
+					<span>{{rad1}}</span>
+					<input type="radio" v-model="rad1" :value="sex"/>男
+				</p>
+				
+				<p>
+					<span>{{msg}}</span>
+					<input type="text" v-model.lazy="msg"/>
+				</p>
+			</form>
+		</div>
+		
+		<script>
+			var vm = new Vue({
+				el:"#app",
+				data:{
+					txt:"admin",
+					txtarea:"",
+					chk:true,
+					chks:[],
+					rad:'男',
+					sel:"bbb",
+					selected:0,
+					sels:[
+						{value:1,text:"张三"},
+						{value:2,text:"李四"},
+						{value:3,text:"王五"}
+					],
+					rad1:"",
+					sex:'nan',
+					msg:""
+				},
+				methods:{
+					
+					
+				}
+			});	
+		</script>
+	</body>
+</html>

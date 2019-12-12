@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<cpt1>
+				<p slot='aaa'>111</p>
+				<p>222</p>
+				<p>333</p>
+			</cpt1>
+		</div>
+		<script>
+			///插槽
+			 var app = new Vue({
+				 el:"#app",
+				 components:{
+					 'cpt1':{
+						 template:'<div><slot name="aaa"></slot><slot></slot></div>'
+					 }
+				 }
+			 });	
+		</script>
+	</body>
+</html>

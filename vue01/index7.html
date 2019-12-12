@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<input type="text" ref="abc"/>
+			<button @click="aaaa">按钮</button>
+		</div>
+		<script>
+		
+			 var app = new Vue({
+				 el:"#app",
+				 methods:{
+					 aaaa:function(){
+						 alert(this.$refs.abc);
+					 }
+				 }
+			 });	
+		</script>
+	</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			{{msg}}
+			<cpt></cpt>
+			<cpt1></cpt1>
+			<cpt2 :msg="msg"></cpt2>
+			<cpt3 @add2="add"></cpt3>
+			
+			
+			<p>{{msg1}}</p>
+			<input type="text" v-model="msg1"/>
+			<!-- :value="msg1" @cddd='msg1=arguments[0]' -->
+			
+			<cpt4 v-model="msg1"></cpt4>	
+			
+			<p>{{rad}}</p>
+			<cpt5 v-model="rad" value='女'></cpt5>	
+			{{num}}
+		</div>
+		<div id="app1">
+			<input type="button"value="+1" @click="add"/>
+		</div>
+		<script>
+			Vue.component("cpt",{
+				data:function(){
+					return {
+						msg:"hello"
+					}
+				},
+				template:"<p>{{msg}}</p>"
+			})
+			
+			var app = new Vue({
+				el:"#app",
+				data:{
+					num:1,
+					rad:false,
+					msg1:"admin",
+					msg:"aaaaa",
+					items:[{id:1,name:'张三'},{id:2,name:'李四'},{id:3,name:'王五'},{id:4,name:'赵六'},{id:5,name:'钱七'}]
+				},
+				methods:{
+					add:function(){
+						alert("add");
+					}
+				},
+				components:{
+					"cpt1":{
+						template:"<button @click='num++'>{{num}}</button>",
+						data:function(){
+							return {num:1};
+						}
+					},
+					"cpt2":{
+						props:['msg'],
+						template:"<p @click='msg+=111'>{{msg}}</p>"
+					},
+					"cpt3":{
+						template:"<p @click='add'>点击</p>",
+						methods:{
+							add:function(){
+								alert("add1");
+								this.$emit('add2');
+							}
+						}
+					},
+					"cpt4":{
+						template:"<input type='text' @input='aaa($event.target.value)'/>",
+						methods:{
+							aaa:function(val){
+								this.$emit('input',val);
+							}
+						}
+					},
+					"cpt5":{
+						model:{
+							prop:'checked'
+						},
+						props:['checked','value'],
+						template:"<input type='radio' :checked='checked' @change='aaa(value)'/>",
+						methods:{
+							aaa:function(val){
+								this.$emit('input',val);
+							}
+						}
+					},
+					"cpt5":{
+						model:{
+							prop:'checked'
+						},
+						props:['checked','value'],
+						template:"<input type='radio' :checked='checked' @change='aaa(value)'/>",
+						methods:{
+							aaa:function(val){
+								this.$emit('input',val);
+							}
+						}
+					}
+				}
+			});	
+		app.$on('add',function(){
+			this.num++;
+		})
+			var app1 = new Vue({
+				el:'#app1',
+				methods:{
+					add:function(){
+						app.$emit('add');
+					}
+				}
+			})
+		
+		</script>
+	</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<list>
+				<template slot="abc" slot-scope="props">
+					<li>{{props.li}}</li>
+				</template>
+			</list>
+		</div>
+		<script>
+			///插槽
+			 var app = new Vue({
+				 el:"#app",
+				 components:{
+					 'list':{
+						 template:'<nav>\
+										<ul>\
+											<slot name="abc" v-for="li in msgs" :li="li"></slot>\
+										</ul>\
+									</nav>',
+						data:function(){
+							return {
+								msgs:['首页','简介','导航1','导航2'] 
+							}
+						}
+					 }
+				 }
+			 });	
+		</script>
+	</body>
+</html>

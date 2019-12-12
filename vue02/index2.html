@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.myText{width: 180px;display: inline-block;}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div class="container">
+				<br />
+				<div class="col-lg-8">
+					<form class="form-inline">
+						<div class="form-group">
+							<input type="text" class="form-control" v-model="work"/>
+						</div>
+						<button class="btn btn-primary" @click.prevent="insert">添加</button>
+					</form>
+					<br />
+					<div class="panel panel-default">
+						<div class="panel-heading clearfix">
+							任务列表
+							<div class="btn-group pull-right">
+								<button :class="['btn','btn-'+(i==cbtn?'primary':'default')]" v-for="(btn,i) in btns" @click="cbtn=i">{{btn}}</button>
+							</div>
+						</div>
+						<ul class="list-group">
+							<li class="list-group-item clearfix" v-for="work in worksInfo.works" >
+								<input type="checkbox" :value="work.id" v-model="chs"/>
+								<span  v-if="work.id!=editwork.id" @dblclick="editwork=work">{{work.text}}</span>
+								<input v-else type="text" class="form-control myText" v-model.trim="tempwork" @keydown.enter="enterWork(work)" @blur="editwork={}"/>
+								<div class="btn-group pull-right">
+									<button @click="work.status=work.status==0?1:0" :class="['btn','btn-'+(work.status==1?'success':'warning')]">{{work.status==1?'标记未完成':'标记完成'}}</button>
+									<button class="btn btn-danger" @click="del(work)">删除</button>
+								</div>
+							</li>
+						</ul>
+						<div class="panel-footer clearfix" v-if="this.worksInfo.works.length>0">
+							<input type="checkbox" :checked="isAll" @click="checkAll"/>
+							<button class="btn btn-danger pull-right" @click="delCheck">删除选中</button>
+						</div>
+						<div class="panel panel-body" v-else>
+							暂无内容
+						</div>
+					</div>
+					<p>共{{worksInfo.num}}项,已完成{{worksInfo.doNum}}项,未完成{{worksInfo.num}}项</p>
+				</div>
+			</div>
+		</div>
+		<script>
+			var app = new Vue({
+				el:"#app",
+				data:{
+					tempwork:"",
+					chs:[],
+					work:"",  //绑定新增的工作名字
+					works:[{id:1,text:'aaa',status:0},{id:2,text:'bbb',status:0}],  //总的工作的数组
+					btns:['全部','已完成','未完成'],  //所有查询的按钮
+					cbtn:0,               //选中的查询的按钮
+					editwork:{}
+				},
+				computed:{
+					isAll:function(){
+						var result = true;
+						var num = 0;
+						for (var i=0;i<this.worksInfo.works.length;i++) {
+							for(var j=0;j<this.chs.length;j++){
+								if(this.worksInfo.works[i].id==this.chs[j]){
+									num++;
+									break;
+								}
+							}
+						}
+						result = num==this.worksInfo.works.length?true:false;
+						return result;
+					},
+					//及时更新查询结果
+					worksInfo:function(){
+						var info = {
+							works:[],   //查询的工作的数组
+							num:0,      //全部工作的数量
+							doNum:0,     //已完成的数量
+							nodoNum:0    //未完成的数量
+						}; 
+						var works = [];  //定义临时的数组  用来保存查询的工作
+						var _this = this;   
+						_this.works.forEach(function(work){
+							if(_this.cbtn==1){
+								if(work.status==1){
+									works.push(work);
+									info.doNum++;
+								}
+							}else if(_this.cbtn==2){
+								if(work.status==0){
+									works.push(work);
+									info.nodoNum++;
+								}
+							}else{
+								works.push(work);	
+								info.num++;
+							}
+						});
+						info.works = works;
+						return info;
+					}
+				},
+				watch:{
+					editwork:function(editwork){
+						this.tempwork=editwork.text;
+					},
+					cbtn:function(){
+						this.chs=[];
+					}
+				},
+				methods:{
+					enterWork:function(work){
+						if (this.tempwork.length==0) {
+							return
+						} else{
+							work.text = this.tempwork;
+							this.editwork={};
+						}
+					},
+					insert:function(){
+						var work = {
+							id:this.works.length+1,
+							text:this.work,
+							status:0
+						};
+						this.works.push(work);
+						this.work="";
+					},
+					checkAll:function(){
+						if (this.isAll) {
+							this.chs=[];
+						}else{
+							var chs = [];
+							this.worksInfo.works.forEach(function(work){
+								chs.push(work.id);
+							})
+							this.chs=chs;
+						}
+					},
+					del:function(work){
+						var result = confirm("是否确认删除!");
+						if (result) {
+							for (var i=0;i<this.works.length;i++) {
+								if(this.works[i].id==work.id){
+									this.works.splice(i,1);
+								}
+							}
+						}
+					},
+					delCheck:function(){
+						if(this.chs.length==0)return;
+						for (var i=0; i<this.chs.length;i++) {
+							for (var j=0; j<this.works.length;j++) {
+								if(this.chs==this.works[j].id){
+									this.works.splice(j,1);
+									break;
+								}
+							}
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

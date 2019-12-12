@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app">
+			<treenode :children="types"></treenode>
+		</div>
+		<script>
+			Vue.component("tree",{
+						props:['type'],
+						template:`
+							<p>	
+								<span>{{type.name}}</span>
+								<treenode :children="type.children"></treenode>
+							</p>`
+			});
+			Vue.component("treenode",{
+						props:['children'],
+						template:`<ul>
+									<li v-for="type in children">
+										<tree v-if="type.children" :type="type"></tree>
+										<span v-else>{{type.name}}</span>
+									</li>
+								</ul>`
+			});
+			
+			var app = new Vue({
+				el:'#app',
+				data:{
+					types:[
+						{
+							name:'电器',
+							children:[
+								{
+									name:'大家电',
+								},
+								{
+									name:'小家电',
+								}
+							]
+						},
+						{
+							name:'服装',
+							children:[
+								{
+									name:'男装',
+									children:[
+										{
+											name:'男上衣'
+										},
+										{
+											name:'男裤'
+										}
+									]
+								},
+								{
+									name:'女装',
+								}
+							]
+						}
+					]
+				}
+			});	
+		</script>
+	</body>
+</html>
